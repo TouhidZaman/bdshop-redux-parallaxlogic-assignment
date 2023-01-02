@@ -1,37 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import ProductCard from "components/ProductCard";
-import axiosInstance from "utils/axios.config";
 import Loading from "components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSortBy } from "features/filterSlice";
+import { useGetProductsQuery } from "features/apiSlice";
 
 const Home = () => {
   const { keywords, sortBy } = useSelector((state) => state.filter);
   const dispatch = useDispatch();
-
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const {
+    data: products,
+    isLoading,
+    isError,
+    error,
+  } = useGetProductsQuery({ sortBy });
   let filteredProducts = [];
   let content = null;
-
-  useEffect(() => {
-    let endpoint = "products";
-    if (sortBy === "desc") {
-      endpoint = "products?sort=desc";
-    }
-    axiosInstance
-      .get(endpoint)
-      .then((data) => {
-        setProducts(data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError("Oops, something went wrong");
-      });
-  }, [sortBy]);
 
   //Applying search filtering
   if (keywords) {
@@ -47,9 +32,9 @@ const Home = () => {
     filteredProducts = products;
   }
 
-  if (loading) {
+  if (isLoading) {
     content = <Loading />;
-  } else if (error) {
+  } else if (isError) {
     content = <h1 className="text-center mt-10 text-2xl">{error} </h1>;
   } else if (!filteredProducts.length) {
     content = <h1 className="text-center mt-10 text-2xl">Oops no products found</h1>;

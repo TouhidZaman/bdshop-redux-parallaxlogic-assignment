@@ -1,39 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { BsFillCartFill } from "react-icons/bs";
 import Rating from "react-rating";
 import { FaStar } from "react-icons/fa";
 
-import axiosInstance from "utils/axios.config";
 import Loading from "components/Loading";
 import { addToCart } from "features/cartSlice";
+import { useGetProductQuery } from "features/apiSlice";
 
 const ProductDetails = () => {
   const { productId } = useParams();
-  const [product, setProduct] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { data: product, isLoading, isError, error } = useGetProductQuery(productId);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    axiosInstance
-      .get(`products/${productId}`)
-      .then((data) => {
-        setProduct(data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError("Oops, something went wrong");
-      });
-  }, [productId]);
-
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
+  if (isError) {
     return <h1 className="text-center">{error}</h1>;
   }
 
