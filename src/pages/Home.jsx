@@ -1,16 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ProductCard from "components/ProductCard";
 import axiosInstance from "utils/axios.config";
 import Loading from "components/Loading";
-import { DataProviderContext } from "context/DataProviderContext";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSortBy } from "features/filterSlice";
 
 const Home = () => {
+  const { keywords, sortBy } = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState("asc");
   const [error, setError] = useState("");
-  const { keywords } = useContext(DataProviderContext);
   let filteredProducts = [];
   let content = null;
 
@@ -77,7 +79,7 @@ const Home = () => {
             className={`border px-2 md:px-3 py-1 md:py-2 rounded-full md:font-semibold ${
               sortBy === "asc" ? activeClass : ""
             }`}
-            onClick={() => setSortBy("asc")}
+            onClick={() => dispatch(toggleSortBy("asc"))}
           >
             Ascending
           </button>
@@ -85,7 +87,7 @@ const Home = () => {
             className={`border px-2 md:px-3 py-1 md:py-2 rounded-full md:font-semibold ${
               sortBy === "desc" ? activeClass : ""
             }`}
-            onClick={() => setSortBy("desc")}
+            onClick={() => dispatch(toggleSortBy("desc"))}
           >
             Descending
           </button>

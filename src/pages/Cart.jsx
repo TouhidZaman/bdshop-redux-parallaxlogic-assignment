@@ -1,11 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import { DataProviderContext } from "context/DataProviderContext";
 import ProductCard from "components/ProductCard";
+import { clearCart } from "features/cartSlice";
 
 const Cart = () => {
-  const { cart, setCart } = useContext(DataProviderContext);
+  const { cart } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
   return (
     <div className="max-w-7xl gap-14 m-8 lg:mx-16">
       <div className="mb-10 flex flex-col lg:flex-row lg:justify-between">
@@ -15,7 +18,7 @@ const Cart = () => {
         <div className="">
           <button
             className={`border px-2 md:px-3 py-1 md:font-semibold text-blue-500`}
-            onClick={() => setCart([])}
+            onClick={() => dispatch(clearCart())}
           >
             Clear Cart
           </button>

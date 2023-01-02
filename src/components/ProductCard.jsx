@@ -1,13 +1,14 @@
-import { DataProviderContext } from "context/DataProviderContext";
-import React, { useContext } from "react";
+import React from "react";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 import { BsFillCartFill } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 import Rating from "react-rating";
-import { useNavigate } from "react-router";
+
+import { addToCart, removeFromCart } from "features/cartSlice";
 
 const ProductCard = ({ product, isInCart }) => {
-  const { addToCart, removeFromCart } = useContext(DataProviderContext);
-
+  const dispatch = useDispatch();
   const { id, title, price, category, image, rating } = product;
   const navigate = useNavigate();
 
@@ -50,7 +51,7 @@ const ProductCard = ({ product, isInCart }) => {
             className={`${
               product.quantity === 1 ? "bg-red-500" : "bg-indigo-500"
             } text-lg text-white rounded h-8 w-10`}
-            onClick={() => removeFromCart(product)}
+            onClick={() => dispatch(removeFromCart(product))}
           >
             -
           </button>
@@ -59,7 +60,7 @@ const ProductCard = ({ product, isInCart }) => {
           </div>
           <button
             className="bg-indigo-500 text-lg text-white rounded h-8 w-10"
-            onClick={() => addToCart(product)}
+            onClick={() => dispatch(addToCart(product))}
           >
             +
           </button>
@@ -75,7 +76,7 @@ const ProductCard = ({ product, isInCart }) => {
           <button
             title="Add to wishlist"
             className="bg-blue-500 py-1 px-2 rounded-full"
-            onClick={() => addToCart(product)}
+            onClick={() => dispatch(addToCart(product))}
           >
             <BsFillCartFill className="text-white" />
           </button>

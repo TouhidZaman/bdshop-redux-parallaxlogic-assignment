@@ -1,18 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BiSearchAlt } from "react-icons/bi";
 import { BsFillCartFill } from "react-icons/bs";
 
-import { DataProviderContext } from "context/DataProviderContext";
+import { useDispatch, useSelector } from "react-redux";
+import { addToSearchKeywords } from "features/filterSlice";
 
 const Navbar = () => {
-  const { setKeywords, cart } = useContext(DataProviderContext);
+  const cart = useSelector((state) => state.cart.cart);
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    setKeywords(search);
+    dispatch(addToSearchKeywords(search));
     if (location.pathname !== "/") {
       navigate("/");
     }
