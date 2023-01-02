@@ -30,7 +30,9 @@ const Navbar = () => {
     <nav className="h-14 bg-blue-500 w-full mx-auto px-2 md:px-16">
       <ul className="h-full  mx-auto flex justify-between items-center gap-2 lg:gap-3 font-semibold text-white">
         <h1 className="text-xl">
-          <Link to={"/"}>BDShop</Link>
+          <Link to={"/"} className="flex align-middle">
+            BDShop <span className="hidden lg:block ml-1">Redux</span>
+          </Link>
         </h1>
         <li className="flex bg-white mx-auto h-9 w-full max-w-lg  rounded-full pr-3">
           <input
