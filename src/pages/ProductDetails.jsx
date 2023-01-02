@@ -57,7 +57,7 @@ const ProductDetails = () => {
               Back to products
             </Link>
             <button
-              title="Add to wishlist"
+              title="Add to Cart"
               className="bg-blue-500  py-1 px-2 rounded-full"
               onClick={() => dispatch(addToCart(product))}
             >
